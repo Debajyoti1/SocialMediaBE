@@ -12,6 +12,8 @@ const app = express();
 // Use middleware to parse incoming requests
 app.use(express.json()); // Parse JSON requests
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded requests
+const passport=require('passport')
+const passportJWT=require('./configs/passport-jwt')
 
 // Import and use routes defined in separate modules
 app.use('/', require('./routes'));

@@ -5,7 +5,7 @@ const router=express.Router()
 //Any request coming to "/" will be handled by home.js router 
 router.use('/',require('./home'))
 
-// router.use('/user',require('./user'))
+router.use('/user',require('./user'))
 // router.use('/post',require('./post'))
 // router.use('/comment',require('./comment'))
 // router.use('/like',require('./like'))
