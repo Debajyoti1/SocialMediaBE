@@ -13,10 +13,12 @@ module.exports.signin = async (req, res) => {
             })
         }
         else {
+            existingUser = existingUser.toJSON()
+            delete existingUser['password']
             return res.status(200).json({
                 message: 'Sign in successful',
                 data: {
-                    token: jwt.sign(existingUser.toJSON(), process.env.SECRET || 'sample-secret123', { expiresIn: '1d' })
+                    token: jwt.sign(existingUser, process.env.SECRET || 'sample-secret123', { expiresIn: '1d' })
                 }
             })
         }
@@ -37,10 +39,11 @@ module.exports.signup = async (req, res) => {
                 message: 'Email already exists'
             })
         }
-        await User.create(req.body);
+        const newUser = await User.create(req.body);
         return res.status(200).json({
             message: 'Sign up successful',
             user: {
+                id: newUser.id,
                 email: req.body.email
             }
         })
@@ -50,4 +53,26 @@ module.exports.signup = async (req, res) => {
             message: 'Something went wrong'
         })
     }
+}
+
+//Get a single profile details by ID
+module.exports.profile = async (req, res) => {
+    try {
+        existingUser = req.user.toJSON()
+        delete existingUser['password']
+        return res.status(200).json({
+            user: existingUser
+        })
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            message: 'Something went wrong'
+        })
+    }
+}
+
+//Update user profile details follwed by JWT Auth
+module.exports.update = (req, res) => {
+    // console.log(req.user);
+    res.json({ 'hi': 'hello' })
 }

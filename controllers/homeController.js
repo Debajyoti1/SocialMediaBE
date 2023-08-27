@@ -23,7 +23,7 @@ module.exports.home = async (req, res) => {
             .populate('like')
         return res.status(200).json({
             message: 'List of Posts',
-            post: posts
+            posts: posts
         })
     }
     catch (err) {

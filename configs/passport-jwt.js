@@ -9,17 +9,18 @@ const options = {
     secretOrKey: process.env.SECRET || 'sample-secret123',
 };
 
+//This is a middleware which validates JWT token and if successful, it stores the user in req.user and pass it to next()
 passport.use(new JWTstrategy(options, async (jwtPayload, done) => {
     try {
         const existingUser = await User.findById(jwtPayload._id);
         if (existingUser) {
             return done(null, existingUser);
         } else {
-            return done(null, false,{message: 'Unauthorized'});
+            return done(null, false, { status: 401, message: 'Unauthorized' });
         }
     } catch (err) {
         console.log(err);
-        return done(err, false, {message: 'Internal Server Error'});
+        return done(err, false, { status: 500, message: 'Internal Server Error' });
     }
 }));
 
