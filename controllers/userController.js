@@ -74,9 +74,9 @@ module.exports.profile = async (req, res) => {
 //Get a profile by it's email field
 module.exports.profileByEmail = async (req, res) => {
     try {
-        const existingUser = await User.findOne({ email: req.params.email });
+        let existingUser = await User.findOne({ email: req.params.email });
         if (existingUser) {
-            const existingUser = existingUser.toJSON()
+            existingUser = existingUser.toJSON()
             delete existingUser['password']
             return res.status(200).json({
                 user: existingUser
