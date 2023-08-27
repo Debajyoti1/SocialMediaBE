@@ -71,7 +71,7 @@ module.exports.profile = async (req, res) => {
     }
 }
 
-//Get a profile by it's email field
+//Get a profile by it's email params field
 module.exports.profileByEmail = async (req, res) => {
     try {
         let existingUser = await User.findOne({ email: req.params.email });
