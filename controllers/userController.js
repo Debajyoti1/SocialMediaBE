@@ -55,14 +55,38 @@ module.exports.signup = async (req, res) => {
     }
 }
 
-//Get a single profile details by ID
+//Get JWT logged in profile details
 module.exports.profile = async (req, res) => {
     try {
-        existingUser = req.user.toJSON()
+        const existingUser = req.user.toJSON()
         delete existingUser['password']
         return res.status(200).json({
             user: existingUser
         })
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            message: 'Something went wrong'
+        })
+    }
+}
+
+//Get a profile by it's email field
+module.exports.profileByEmail = async (req, res) => {
+    try {
+        const existingUser = await User.findOne({ email: req.params.email });
+        if (existingUser) {
+            const existingUser = existingUser.toJSON()
+            delete existingUser['password']
+            return res.status(200).json({
+                user: existingUser
+            })
+        }
+        else {
+            return res.status(404).json({
+                message: 'Profile page not found'
+            })
+        }
     } catch (err) {
         console.error(err);
         return res.status(500).json({
